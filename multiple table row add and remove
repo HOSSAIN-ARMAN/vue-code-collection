@@ -1,0 +1,156 @@
+<template>
+    <section>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box">
+                    <div class="box-header btn-info">
+                        <h2>LC/SC Attached</h2>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label><b>Distribution Method : </b></label>
+                                <label class="radio-inline">
+                                    <input style="margin-top: -5px !important;" type="radio" name="distribution_method">Proportionately
+                                </label>
+                                <label class="radio-inline">
+                                    <input style="margin-top: -5px !important;" type="radio" name="distribution_method">Manually
+                                </label>
+                                <label class="radio-inline">
+                                    <input style="margin-top: -5px !important;" type="radio" name="distribution_method"
+                                           checked>None
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="reportTable">
+                                    <thead>
+                                    <tr>
+                                        <td style="width: 5%">SL</td>
+                                        <td style="width: 15%">SC/LC No</td>
+                                        <td style="width: 10%">Buyer</td>
+                                        <td style="width: 10%">LC/SC</td>
+                                        <td style="width: 10%">LC/SC Value</td>
+                                        <td style="width: 10%" title="Current Distribution">Current Dis.</td>
+                                        <td style="width: 10%" title="Cumulative Distribution">Cumulative Dis.</td>
+                                        <td style="width: 10%">Occupied %</td>
+                                        <td style="width: 10%">Status</td>
+                                        <td style="width: 10%">Action</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(data, index) in scLcList">
+                                        <td>*</td>
+                                        <td><input @dblclick="scLcPopupEvent()" type="text" class="form-control"
+                                                   readonly></td>
+                                        <td>*</td>
+                                        <td>*</td>
+                                        <td>*</td>
+                                        <td>*</td>
+                                        <td>*</td>
+                                        <td>*</td>
+                                        <td>*</td>
+                                        <td style="padding: 2px !important;">
+                                            <button @click="lcScAddEvent()" class="btn btn-xs btn-primary">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button :disabled="!removable" @click="lcScRemoveEvent(index)" class="btn btn-xs btn-warning">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <modal name="scLcModal" width="60%" styles="overflow-y: scroll;" :draggable="true" :resizable="false"
+               :height="600"
+               :clickToClose="false">
+            <div class="text-right" style="margin-top: 1%;margin-right: 1.5%;">
+                <button type="button" class="btn btn-sm btn-danger" @click="$modal.hide('scLcModal')">
+                    <i class="fa fa-times"></i> Close
+                </button>
+            </div>
+            <div class="padding">
+                <LCSCModal @scLcSelect='scLcPopupSelectEvent'/>
+            </div>
+        </modal>
+    </section>
+</template>
+
+<script>
+import Select2 from "v-select2-component";
+import LCSCModal from "./LCSCModal";
+
+const select = [
+    {
+        id: 0,
+        text: 'Select'
+    }
+];
+const listData = {
+    id: '',
+    lc_sc_no: '',
+    buyer_id: '',
+    lc_sc: '',
+    lc_sc_value: '',
+    current_dis: '',
+    Cumulative_dis: '',
+    occupied: '',
+    status: '',
+}
+export default {
+    name: "LCSCAttached",
+    components: {
+        LCSCModal,
+        Select2
+    },
+    data() {
+        return {
+            categories: [...select],
+            scLcList: [listData]
+        }
+    },
+    computed: {
+        removable(){
+            return this.scLcList.length != 1;
+        }
+    },
+    methods: {
+        scLcPopupEvent() {
+            this.$modal.show('scLcModal');
+        },
+        scLcPopupSelectEvent(lc) {
+            this.$modal.hide('scLcModal');
+        },
+        lcScAddEvent() {
+            this.scLcList.push(listData)
+        },
+        lcScRemoveEvent(idx) {
+            this.scLcList.splice(idx, 1);
+        }
+    }
+}
+</script>
+
+<style scoped>
+.w-100 {
+    width: 100% !important;
+}
+
+.w-200 {
+    width: 200px !important;
+}
+
+.form-control {
+    border: 1px solid #909ac8 !important;
+    border-radius: 10px 0 0 0;
+    max-width: 100% !important;
+    height: 35px !important
+}
+</style>
