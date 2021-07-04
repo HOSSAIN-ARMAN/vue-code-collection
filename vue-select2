@@ -1,0 +1,36 @@
+for select2 ---> 
+
+<td>
+  <Select2 v-model="searchForm.factory" :options="factories"></Select2>
+</td>
+-----------------------------
+           searchForm: {
+                factory: null,
+            },
+
+            factories: [
+                {
+                    id: 0,
+                    text: 'select'
+                }
+            ]
+            
+            ------------
+            
+            await axios.get('/factories_api')
+            .then(({data}) => {
+                let factories = data.map((value, key) => {
+                    return {
+                        id: value.id,
+                        text: value.factory_name,
+                    }
+                });
+                this.factories.push(...factories)
+                console.log(factories);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+            .finally(() => {
+                this.loadingStatus = false;
+            })
