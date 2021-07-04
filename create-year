@@ -1,0 +1,26 @@
+ <Select2 v-model="searchForm.year" :options="years"/>
+
+
+data() {
+  return {
+     year: new Date().getFullYear(),
+     
+     years:[],
+   }
+}
+
+generateYear: function (){
+            let current = new Date().getFullYear()
+            let max = current + 10
+            let min  = current - 10
+            let years = []
+
+            for (let i = max; i >= min; i--) {
+                years.push({
+                    id:i,
+                    text:i
+                })
+            }
+
+            this.years = years
+        },
