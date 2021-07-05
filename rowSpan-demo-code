@@ -54,3 +54,63 @@ new Vue({
     </template>
   </v-simple-table>
 </div>
+
+
+
+
+
+
+
+
+-------------------- real projecyt apply ------------------------
+
+filteredData: [],
+
+searchPoList() {
+            this.loadingStatus = true;
+            axios.get(`${po_list_for_budget_uri_prefix}/po-approval-for-budget`)
+            .then((response) => {
+                this.filteredData = response.data;
+                console.log(this.filteredData);
+            })
+
+        }
+
+
+<template v-for="data in filteredData">
+                    <tr v-for="(subData, isSub) in data.details" v-bind:style="{ 'background-color': gereen) }">
+
+                        <td v-if="isSub === 0" :rowspan="data.details.length">{{ data.unique_id}}</td>
+                        <td v-if="isSub === 0" :rowspan="data.details.length">{{ data.internal_ref}}</td>
+                        <td v-if="isSub === 0" :rowspan="data.details.length">{{ data.buyer}}</td>
+                        <td v-if="isSub === 0" :rowspan="data.details.length">{{ data.year}}</td>
+                        <td v-if="isSub === 0" :rowspan="data.details.length">{{ data.style_name}}</td>
+                        <td v-if="isSub === 0" :rowspan="data.details.length">{{ data.insert_by}}</td>
+
+                        <td>{{ subData.po_no }}</td>
+                        <td>{{ subData.unit_price }}</td>
+                        <td>{{ subData.before_po_qty }}</td>
+                        <td>{{ subData.revise_po_qty }}</td>
+                        <td>{{ subData.remarks }}</td>
+                        <td>{{ subData.ship_date }}</td>
+                        <td>{{ subData.approve_date }}</td>
+                        <td>{{ subData.approve_remarks }}</td>
+                        <td>
+                            <label class="form-checkbox">
+                                <input type="checkbox" >
+                                <i class="form-icon"></i>
+                            </label>
+                        </td>
+                    </tr>
+                </template>
+
+
+
+
+
+
+
+
+
+
+
